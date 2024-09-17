@@ -17,6 +17,14 @@ namespace Poker
             this.palo = palo;
         }
 
+        public Carta(int num, int palo)
+        {
+            this.num = num;
+            if (palo < 0 || palo >= 4)
+                palo = 0;
+            this.palo = (Palo) palo;
+        }
+
         int Num { get { return num; } set { num = value; } }
         Palo Palo{ get { return palo; } set { palo = value; } }
     }

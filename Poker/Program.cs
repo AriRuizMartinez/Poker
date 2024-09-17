@@ -28,8 +28,30 @@ namespace Poker
 
             int numeroJugadores = PedirNumero();
 
-            
-                
+            Jugador[] jugadores = new Jugador[numeroJugadores];
+            int turno = 0;
+
+            for (int i = 0; i < numeroJugadores; i++)
+                jugadores[i] = new Jugador();
+
+            Baraja baraja = new Baraja();
+            baraja.CrearBaraja();
+            baraja.Barajar();
+
+            Repartir(jugadores, baraja);
+
+        }
+
+        private static void Repartir(Jugador[] jugadores, Baraja baraja)
+        {
+            int turno = 0;
+            while ( !baraja.IsEmpty())
+            {
+                jugadores[turno].Add(baraja.RobarCarta());
+                turno++;
+                if (turno >= jugadores.Length)
+                    turno = 0;
+            }
         }
 
         static int Menu()

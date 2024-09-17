@@ -14,5 +14,10 @@ namespace Poker
         {
             mano = new List<Carta>();
         }
+
+        public void Add(Carta carta)
+        {
+            mano.Add(carta);
+        }
     }
 }

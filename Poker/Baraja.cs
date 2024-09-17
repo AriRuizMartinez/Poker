@@ -58,5 +58,17 @@ namespace Poker
             cartas.Remove(carta);
             return carta;
         }
+
+        public void CrearBaraja()
+        {
+            for (int i = 0; i < 4; i++)
+                for (int j = 0; j < 12; j++)
+                    cartas.Add(new Carta(j, i));
+        }
+
+        public bool IsEmpty()
+        {
+            return cartas.Count == 0;
+        }
     }
 }
