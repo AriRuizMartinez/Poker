@@ -32,7 +32,7 @@ namespace Poker
             int turno = 0;
 
             for (int i = 0; i < numeroJugadores; i++)
-                jugadores.Add(new Jugador());
+                jugadores.Add(new Jugador(i));
 
             Baraja baraja = new Baraja();
             baraja.CrearBaraja();
@@ -59,7 +59,8 @@ namespace Poker
         private static void Repartir(List<Jugador> jugadores, Baraja baraja)
         {
             int turno = 0;
-            while ( !baraja.IsEmpty())
+            int residuo = baraja.Count % jugadores.Count;
+            while ( baraja.Count > residuo)
             {
                 jugadores[turno].Add(baraja.RobarCarta());
                 turno++;

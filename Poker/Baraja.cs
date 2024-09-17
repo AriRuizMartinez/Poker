@@ -70,5 +70,7 @@ namespace Poker
         {
             return cartas.Count == 0;
         }
+
+        public int Count { get { return cartas.Count; } }
     }
 }

@@ -9,10 +9,12 @@ namespace Poker
     public class Jugador
     {
         List<Carta> mano;
+        int id;
 
-        public Jugador()
+        public Jugador(int id)
         {
             mano = new List<Carta>();
+            this.id = id;
         }
 
         public void Add(Carta carta)
