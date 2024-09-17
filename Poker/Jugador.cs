@@ -19,5 +19,10 @@ namespace Poker
         {
             mano.Add(carta);
         }
+
+        public bool IsEmpty()
+        {
+            return mano.Count == 0;
+        }
     }
 }
