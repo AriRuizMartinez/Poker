@@ -42,6 +42,8 @@ namespace Poker
 
             while(jugadores.Count > 1)
             {
+                List<Carta> ronda = new List<Carta>();
+
 
 
                 for(int i = 0; i < jugadores.Count; i++)

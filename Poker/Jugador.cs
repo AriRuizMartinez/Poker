@@ -26,5 +26,18 @@ namespace Poker
         {
             return mano.Count == 0;
         }
+
+        public Carta DarCarta()
+        {
+            Carta c = mano[0];
+            mano.RemoveAt(0);
+            return c;
+        }
+
+        public void GanarRonda(List<Carta> cartaList)
+        {
+            foreach(Carta carta in cartaList) 
+                mano.Add(carta);
+        }
     }
 }
