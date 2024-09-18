@@ -23,6 +23,29 @@ namespace Poker
             }
         }
 
+        static int Menu()
+        {
+            int option;
+
+            do
+            {
+                Console.WriteLine(@"
+┌───────────────────────────────────┐
+│        MENU  PRINCIPAL            │
+├───────────────────────────────────┤
+│  (1)  - Jugar                     │
+│  (0)  - Salir                     │
+└───────────────────────────────────┘
+");
+
+                if (!int.TryParse(Console.ReadLine(), out option))
+                    Console.WriteLine("Opcion invalida");
+
+            } while (option < 0 || option > 1);
+
+            return option;
+        }
+
         private static void Jugar()
         {
 
@@ -49,7 +72,7 @@ namespace Poker
 
                 int id = ComprobarGanador(ronda);
 
-
+                jugadores[id].GanarRonda(ronda);
 
                 for(int i = 0; i < jugadores.Count; i++)
                 {
@@ -61,42 +84,6 @@ namespace Poker
                 }
             }
 
-        }
-
-        private static void Repartir(List<Jugador> jugadores, Baraja baraja)
-        {
-            int turno = 0;
-            int residuo = baraja.Count % jugadores.Count;
-            while ( baraja.Count > residuo)
-            {
-                jugadores[turno].Add(baraja.RobarCarta());
-                turno++;
-                if (turno >= jugadores.Count)
-                    turno = 0;
-            }
-        }
-
-        static int Menu()
-        {
-            int option;
-
-            do
-            {
-                Console.WriteLine(@"
-┌───────────────────────────────────┐
-│        MENU  PRINCIPAL            │
-├───────────────────────────────────┤
-│  (1)  - Jugar                     │
-│  (0)  - Salir                     │
-└───────────────────────────────────┘
-");
-
-                if (!int.TryParse(Console.ReadLine(), out option))
-                    Console.WriteLine("Opcion invalida");
-
-            } while (option < 0 || option > 1);
-
-            return option;
         }
 
         static int PedirNumero()
@@ -116,7 +103,20 @@ namespace Poker
                 Console.WriteLine("Debes introducir un numero ");
                 return PedirNumero();
             }
-            
+
+        }
+
+        private static void Repartir(List<Jugador> jugadores, Baraja baraja)
+        {
+            int turno = 0;
+            int residuo = baraja.Count % jugadores.Count;
+            while ( baraja.Count > residuo)
+            {
+                jugadores[turno].Add(baraja.RobarCarta());
+                turno++;
+                if (turno >= jugadores.Count)
+                    turno = 0;
+            }
         }
 
         static int ComprobarGanador(List<Carta> ronda)

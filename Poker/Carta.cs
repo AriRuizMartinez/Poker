@@ -10,6 +10,8 @@ namespace Poker
     {
         int num;
         Palo palo;
+        public int Num { get { return num; } set { num = value; } }
+        public Palo Palo{ get { return palo; } set { palo = value; } }
 
         public Carta(int num, Palo palo)
         {
@@ -25,7 +27,5 @@ namespace Poker
             this.palo = (Palo) palo;
         }
 
-        public int Num { get { return num; } set { num = value; } }
-        public Palo Palo{ get { return palo; } set { palo = value; } }
     }
 }

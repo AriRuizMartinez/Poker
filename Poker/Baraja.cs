@@ -9,6 +9,8 @@ namespace Poker
     public class Baraja
     {
         List<Carta> cartas;
+        public int Count { get { return cartas.Count; } }
+
         public Baraja()
         {
             cartas = new List<Carta>();
@@ -19,20 +21,6 @@ namespace Poker
             Carta carta = cartas[0];
             cartas.Remove(carta);
             return carta;
-        }
-
-        public void Barajar()
-        {
-            Random r = new Random();
-
-            int cont = cartas.Count;
-            while(cont > 0)
-            {
-                int id = r.Next(0, cont);
-                cartas.Add(cartas[id]);
-                cartas.RemoveAt(id);
-                cont--;
-            }
         }
 
         public Carta RobarAlAzar()
@@ -59,6 +47,20 @@ namespace Poker
             return carta;
         }
 
+        public void Barajar()
+        {
+            Random r = new Random();
+
+            int cont = cartas.Count;
+            while (cont > 0)
+            {
+                int id = r.Next(0, cont);
+                cartas.Add(cartas[id]);
+                cartas.RemoveAt(id);
+                cont--;
+            }
+        }
+
         public void CrearBaraja()
         {
             for (int i = 0; i < 4; i++)
@@ -71,6 +73,5 @@ namespace Poker
             return cartas.Count == 0;
         }
 
-        public int Count { get { return cartas.Count; } }
     }
 }
