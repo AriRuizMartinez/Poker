@@ -70,21 +70,20 @@ namespace Poker
                 foreach(Jugador jugador in jugadores) 
                     ronda.Add(jugador.DarCarta());
 
-                List<int> ids = ComprobarGanador(ronda);
-                int id;
+                List<Jugador> ganadores = ComprobarGanador(ronda);
+                Jugador ganador;
 
-                while (!HayGanador(ronda, jugadores, ids, out id)) ;
-                jugadores[id].GanarRonda(ronda);
+                while (!HayGanador(ronda, jugadores, ganadores, out ganador)) ;
+                ganador.GanarRonda(ronda);
 
                 Console.WriteLine("");
-                for(int i = 0; i < jugadores.Count; i++)
+                foreach(Jugador j in jugadores.ToList())
                 {
-                    Console.WriteLine(jugadores[i].ToString() + " tiene " + jugadores[i].Count + " cartas.");
-                    if (jugadores[i].IsEmpty())
+                    Console.WriteLine(j.ToString() + " tiene " + j.Count + " cartas.");
+                    if (j.IsEmpty())
                     {
                         Console.WriteLine("Por lo tanto ha sido eliminado del juego.");
-                        jugadores.Remove(jugadores[i]);
-                        i--;
+                        jugadores.Remove(j);
                     }
                 }
             }
@@ -127,100 +126,98 @@ namespace Poker
             Console.WriteLine("Cada jugador empieza con " + jugadores[0].Count + " cartas.");
         }
 
-        static List<int> ComprobarGanador(List<Carta> ronda)
+        static List<Jugador> ComprobarGanador(List<Carta> ronda)
         {
-            List<int> ids = new List<int>();
-            int ganador = -1;
-            int cont = 0;
+            List<Jugador> ganadores = new List<Jugador>();
+            int max = -1;
 
             Console.WriteLine("----------------------------------------------------");
 
             foreach (Carta carta in ronda)
             {
-                Console.WriteLine("El jugador " + cont + " ha sacado " + carta.ToString());
+                Console.WriteLine(carta.poseedor + " ha sacado " + carta.ToString());
 
-                if (carta.Num > ganador)
+                if (carta.Num > max)
                 {
-                    ganador = carta.Num;
-                    ids.Clear();
-                    ids.Add(cont);
-                }else if(carta.Num == ganador)
-                    ids.Add(cont);
-                
-                cont++;
+                    max = carta.Num;
+                    ganadores.Clear();
+                    ganadores.Add(carta.poseedor);
+                }else if(carta.Num == max)
+                    ganadores.Add(carta.poseedor);
             }
 
-            if(ids.Count == 1)
+            if(ganadores.Count == 1)
                 Console.WriteLine(@"
 ----------------------------------------------------
-El ganador de la ronda ha sido el jugador " + ids[0]);
+El ganador de la ronda ha sido " + ganadores[0].ToString());
 
-
-            return ids;
+            return ganadores;
         }
         
-        private static bool HayGanador(List<Carta> ronda, List<Jugador> jugadores, List<int> ids, out int id)
+        private static bool HayGanador(List<Carta> ronda, List<Jugador> jugadores, List<Jugador> ganadores, out Jugador ganador)
         {
             string fraseEmpate = "Ha habido un empate entre ";
             List<Carta> nuevaRonda = new List<Carta>();
 
-            foreach (int i in ids.ToList())
+            foreach (Jugador j in ganadores.ToList())
             {
-                if (!jugadores[i].IsEmpty())
+                if (!j.IsEmpty())
                 {
-                    nuevaRonda.Add(jugadores[i].DarCarta());
-                    fraseEmpate += jugadores[i].ToString() + ", ";
+                    nuevaRonda.Add(j.DarCarta());
+                    fraseEmpate += j.ToString() + ", ";
                 }
                 else
-                    ids.Remove(i);
+                    ganadores.Remove(j);
             }
 
-            if (ids.Count == 1)
+            if (ganadores.Count == 1)
             {
                 foreach (Carta c in nuevaRonda)
                     ronda.Add(c);
-                id = ids[0];
+                ganador = ganadores[0];
                 return true;
             }
 
             Console.WriteLine(fraseEmpate);
 
-            List<int> nuevosIds = new List<int>();
-            int ganador = -1;
-            int cont = 0;
+            List<Jugador> nuevosGanadores = new List<Jugador>();
+            int max = -1;
 
             Console.WriteLine("----------------------------------------------------");
 
             foreach (Carta carta in nuevaRonda)
             {
-                Console.WriteLine("El jugador " + cont + " ha sacado " + carta.ToString());
+                Console.WriteLine(carta.poseedor.ToString() + " ha sacado " + carta.ToString());
 
-                if (carta.Num > ganador)
+                if (carta.Num > max)
                 {
-                    ganador = carta.Num;
-                    nuevosIds.Clear();
-                    nuevosIds.Add(cont);
+                    max = carta.Num;
+                    nuevosGanadores.Clear();
+                    nuevosGanadores.Add(carta.poseedor);
                 }
-                else if (carta.Num == ganador)
-                    nuevosIds.Add(cont);
-
-                cont++;
+                else if (carta.Num == max)
+                    nuevosGanadores.Add(carta.poseedor);
             }
 
             foreach(Carta c in nuevaRonda)
                 ronda.Add(c);
 
-            if(nuevosIds.Count == 1)
+            if(nuevosGanadores.Count == 1)
             {
-                id = nuevosIds[0];
+                ganador = nuevosGanadores[0];
+                
+                Console.WriteLine(@"
+----------------------------------------------------
+El ganador de la ronda ha sido " + ganador.ToString());
+
                 return true;
             }
 
-            ids.Clear();
-            foreach(int i in nuevosIds) 
-                ids.Add(i);
+            ganadores.Clear();
+            foreach(Jugador j in nuevosGanadores) 
+                ganadores.Add(j);
 
-            id = -1;
+            ganador = null;
             return false;
         }
     }

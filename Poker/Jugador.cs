@@ -20,6 +20,7 @@ namespace Poker
 
         public void Add(Carta carta)
         {
+            carta.poseedor = this;
             mano.Add(carta);
         }
 
@@ -38,7 +39,7 @@ namespace Poker
         public void GanarRonda(List<Carta> cartaList)
         {
             foreach(Carta carta in cartaList) 
-                mano.Add(carta);
+                Add(carta);
         }
 
         public override string ToString()

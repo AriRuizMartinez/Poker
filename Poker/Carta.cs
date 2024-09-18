@@ -10,6 +10,7 @@ namespace Poker
     {
         public int Num { get; }
         public ePalo Palo{ get; }
+        public Jugador poseedor { get; set; }
 
         public Carta(int num, ePalo palo)
         {
