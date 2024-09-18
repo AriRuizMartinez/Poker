@@ -8,26 +8,13 @@ namespace Poker
 {
     public class Carta
     {
-        int num;
-        Palo palo;
-        public int Num { get { return num; } set { num = value; } }
-        public Palo Palo{ get { return palo; } set { palo = value; } }
+        public int Num { get; }
+        public Palo Palo{ get; }
 
         public Carta(int num, Palo palo)
         {
-            this.num = num;
-            this.palo = palo;
+            this.Num = num;
+            this.Palo = palo;
         }
-
-        public Carta(int num, int palo)
-        {
-            this.num = num;
-            if (palo < 0 || palo >= 4)
-                palo = 0;
-            this.palo = (Palo) palo;
-
-            Enum.GetValues(typeof(Palo));
-        }
-
     }
 }
