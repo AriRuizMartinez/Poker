@@ -8,7 +8,7 @@ namespace Poker
 {
     public class Jugador
     {
-        List<Carta> mano;
+        protected List<Carta> mano;
         public int Count {  get { return mano.Count; } }
         public int Id { get; }
 
@@ -46,5 +46,6 @@ namespace Poker
         {
             return "El jugador " + Id + " ";
         }
+
     }
 }

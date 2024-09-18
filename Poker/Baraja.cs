@@ -63,6 +63,7 @@ namespace Poker
 
         public void CrearBaraja()
         {
+            cartas.Clear();
             for (int i = 1; i <= 12; i++)
                 foreach(ePalo palo in Enum.GetValues(typeof(ePalo)))
                     cartas.Add(new Carta(i, palo));
@@ -71,6 +72,11 @@ namespace Poker
         public bool IsEmpty()
         {
             return cartas.Count == 0;
+        }
+
+        public void Add(Carta carta)
+        {
+            cartas.Add(carta);
         }
 
         public override string ToString()
