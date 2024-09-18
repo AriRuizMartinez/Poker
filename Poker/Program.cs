@@ -44,6 +44,11 @@ namespace Poker
             {
                 List<Carta> ronda = new List<Carta>();
 
+                foreach(Jugador jugador in jugadores) 
+                    ronda.Add(jugador.DarCarta());
+
+                int id = ComprobarGanador(ronda);
+
 
 
                 for(int i = 0; i < jugadores.Count; i++)
@@ -112,6 +117,24 @@ namespace Poker
                 return PedirNumero();
             }
             
+        }
+
+        static int ComprobarGanador(List<Carta> ronda)
+        {
+            int id = -1;
+            int ganador = -1;
+            int cont = 0;
+
+            foreach (Carta carta in ronda)
+            {
+                if (carta.Num > ganador)
+                {
+                    ganador = carta.Num;
+                    id = cont;
+                }
+                cont++;
+            }
+            return id;
         }
     }
        

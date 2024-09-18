@@ -25,7 +25,7 @@ namespace Poker
             this.palo = (Palo) palo;
         }
 
-        int Num { get { return num; } set { num = value; } }
-        Palo Palo{ get { return palo; } set { palo = value; } }
+        public int Num { get { return num; } set { num = value; } }
+        public Palo Palo{ get { return palo; } set { palo = value; } }
     }
 }
