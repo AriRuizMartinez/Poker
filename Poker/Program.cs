@@ -52,7 +52,6 @@ namespace Poker
             int numeroJugadores = PedirNumero();
 
             List<Jugador> jugadores = new List<Jugador>();
-            int turno = 0;
 
             for (int i = 0; i < numeroJugadores; i++)
                 jugadores.Add(new Jugador(i));
@@ -74,10 +73,13 @@ namespace Poker
 
                 jugadores[id].GanarRonda(ronda);
 
+                Console.WriteLine("");
                 for(int i = 0; i < jugadores.Count; i++)
                 {
+                    Console.WriteLine("El jugador " + jugadores[i].Id + " tiene " + jugadores[i].Count + " cartas.");
                     if (jugadores[i].IsEmpty())
                     {
+                        Console.WriteLine("Por lo tanto ha sido eliminado del juego.");
                         jugadores.Remove(jugadores[i]);
                         i--;
                     }
@@ -108,6 +110,7 @@ namespace Poker
 
         private static void Repartir(List<Jugador> jugadores, Baraja baraja)
         {
+            Console.WriteLine("Repartimos las cartas.");
             int turno = 0;
             int residuo = baraja.Count % jugadores.Count;
             while ( baraja.Count > residuo)
@@ -117,6 +120,7 @@ namespace Poker
                 if (turno >= jugadores.Count)
                     turno = 0;
             }
+            Console.WriteLine("Cada jugador empieza con " + jugadores[0].Count + " cartas.");
         }
 
         static int ComprobarGanador(List<Carta> ronda)
@@ -125,8 +129,11 @@ namespace Poker
             int ganador = -1;
             int cont = 0;
 
+            Console.WriteLine("----------------------------------------------------");
+
             foreach (Carta carta in ronda)
             {
+                Console.WriteLine("El jugador " + cont + " ha sacado el " +  carta.Num + " de " + carta.Palo.ToString());
                 if (carta.Num > ganador)
                 {
                     ganador = carta.Num;
@@ -134,6 +141,10 @@ namespace Poker
                 }
                 cont++;
             }
+
+            Console.WriteLine(@"
+----------------------------------------------------
+El ganador de la ronda ha sido el jugador " +  id);
             return id;
         }
     }

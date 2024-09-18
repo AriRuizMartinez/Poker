@@ -10,6 +10,8 @@ namespace Poker
     {
         List<Carta> mano;
         int id;
+        public int Count {  get { return mano.Count; } }
+        public int Id {  get { return id; } }
 
         public Jugador(int id)
         {

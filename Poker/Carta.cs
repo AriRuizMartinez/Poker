@@ -25,6 +25,8 @@ namespace Poker
             if (palo < 0 || palo >= 4)
                 palo = 0;
             this.palo = (Palo) palo;
+
+            Enum.GetValues(typeof(Palo));
         }
 
     }
