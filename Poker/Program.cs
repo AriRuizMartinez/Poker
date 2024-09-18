@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -74,7 +75,8 @@ namespace Poker
                 Jugador ganador;
 
                 while (!HayGanador(ronda, jugadores, ganadores, out ganador)) ;
-                ganador.GanarRonda(ronda);
+
+                ganador?.GanarRonda(ronda);
 
                 Console.WriteLine("");
                 foreach(Jugador j in jugadores.ToList())
@@ -87,7 +89,8 @@ namespace Poker
                     }
                 }
             }
-
+            Console.WriteLine("");
+            Console.WriteLine(jugadores[0].ToString() + " ha ganado el juego!!! :)");
             Console.WriteLine("");
         }
 
@@ -147,9 +150,11 @@ namespace Poker
             }
 
             if(ganadores.Count == 1)
+            {
                 Console.WriteLine(@"
 ----------------------------------------------------
 El ganador de la ronda ha sido " + ganadores[0].ToString());
+            }
 
             return ganadores;
         }
@@ -158,6 +163,7 @@ El ganador de la ronda ha sido " + ganadores[0].ToString());
         {
             string fraseEmpate = "Ha habido un empate entre ";
             List<Carta> nuevaRonda = new List<Carta>();
+            ganador = null;
 
             foreach (Jugador j in ganadores.ToList())
             {
@@ -167,7 +173,10 @@ El ganador de la ronda ha sido " + ganadores[0].ToString());
                     fraseEmpate += j.ToString() + ", ";
                 }
                 else
+                {
                     ganadores.Remove(j);
+                    ganador = j;
+                }
             }
 
             if (ganadores.Count == 1)
@@ -175,6 +184,11 @@ El ganador de la ronda ha sido " + ganadores[0].ToString());
                 foreach (Carta c in nuevaRonda)
                     ronda.Add(c);
                 ganador = ganadores[0];
+                return true;
+            }else if(ganadores.Count == 0)
+            {
+                foreach (Carta c in nuevaRonda)
+                    ronda.Add(c);
                 return true;
             }
 
