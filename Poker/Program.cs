@@ -70,14 +70,16 @@ namespace Poker
                 foreach(Jugador jugador in jugadores) 
                     ronda.Add(jugador.DarCarta());
 
-                int id = ComprobarGanador(ronda);
+                List<int> ids = ComprobarGanador(ronda);
+                int id;
 
+                while (!HayGanador(ronda, jugadores, ids, out id)) ;
                 jugadores[id].GanarRonda(ronda);
 
                 Console.WriteLine("");
                 for(int i = 0; i < jugadores.Count; i++)
                 {
-                    Console.WriteLine("El jugador " + jugadores[i].Id + " tiene " + jugadores[i].Count + " cartas.");
+                    Console.WriteLine(jugadores[i].ToString() + " tiene " + jugadores[i].Count + " cartas.");
                     if (jugadores[i].IsEmpty())
                     {
                         Console.WriteLine("Por lo tanto ha sido eliminado del juego.");
@@ -125,9 +127,9 @@ namespace Poker
             Console.WriteLine("Cada jugador empieza con " + jugadores[0].Count + " cartas.");
         }
 
-        static int ComprobarGanador(List<Carta> ronda)
+        static List<int> ComprobarGanador(List<Carta> ronda)
         {
-            int id = -1;
+            List<int> ids = new List<int>();
             int ganador = -1;
             int cont = 0;
 
@@ -135,19 +137,91 @@ namespace Poker
 
             foreach (Carta carta in ronda)
             {
-                Console.WriteLine("El jugador " + cont + " ha sacado el " +  carta.Num + " de " + carta.Palo.ToString());
+                Console.WriteLine("El jugador " + cont + " ha sacado " + carta.ToString());
+
                 if (carta.Num > ganador)
                 {
                     ganador = carta.Num;
-                    id = cont;
-                }
+                    ids.Clear();
+                    ids.Add(cont);
+                }else if(carta.Num == ganador)
+                    ids.Add(cont);
+                
                 cont++;
             }
 
-            Console.WriteLine(@"
+            if(ids.Count == 1)
+                Console.WriteLine(@"
 ----------------------------------------------------
-El ganador de la ronda ha sido el jugador " +  id);
-            return id;
+El ganador de la ronda ha sido el jugador " + ids[0]);
+
+
+            return ids;
+        }
+        
+        private static bool HayGanador(List<Carta> ronda, List<Jugador> jugadores, List<int> ids, out int id)
+        {
+            string fraseEmpate = "Ha habido un empate entre ";
+            List<Carta> nuevaRonda = new List<Carta>();
+
+            foreach (int i in ids.ToList())
+            {
+                if (!jugadores[i].IsEmpty())
+                {
+                    nuevaRonda.Add(jugadores[i].DarCarta());
+                    fraseEmpate += jugadores[i].ToString() + ", ";
+                }
+                else
+                    ids.Remove(i);
+            }
+
+            if (ids.Count == 1)
+            {
+                foreach (Carta c in nuevaRonda)
+                    ronda.Add(c);
+                id = ids[0];
+                return true;
+            }
+
+            Console.WriteLine(fraseEmpate);
+
+            List<int> nuevosIds = new List<int>();
+            int ganador = -1;
+            int cont = 0;
+
+            Console.WriteLine("----------------------------------------------------");
+
+            foreach (Carta carta in nuevaRonda)
+            {
+                Console.WriteLine("El jugador " + cont + " ha sacado " + carta.ToString());
+
+                if (carta.Num > ganador)
+                {
+                    ganador = carta.Num;
+                    nuevosIds.Clear();
+                    nuevosIds.Add(cont);
+                }
+                else if (carta.Num == ganador)
+                    nuevosIds.Add(cont);
+
+                cont++;
+            }
+
+            foreach(Carta c in nuevaRonda)
+                ronda.Add(c);
+
+            if(nuevosIds.Count == 1)
+            {
+                id = nuevosIds[0];
+                return true;
+            }
+
+            ids.Clear();
+            foreach(int i in nuevosIds) 
+                ids.Add(i);
+
+            id = -1;
+            return false;
         }
     }
        

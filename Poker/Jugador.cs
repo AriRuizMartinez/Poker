@@ -40,5 +40,10 @@ namespace Poker
             foreach(Carta carta in cartaList) 
                 mano.Add(carta);
         }
+
+        public override string ToString()
+        {
+            return "El jugador " + Id + " ";
+        }
     }
 }

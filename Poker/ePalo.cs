@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Poker
 {
-    public enum Palo
+    public enum ePalo
     {
         ESPADA,
         BASTO,
