@@ -18,20 +18,14 @@ namespace Poker
 
         public Carta RobarCarta()
         {
-            Carta carta = cartas[0];
-            cartas.Remove(carta);
-            return carta;
+            return RobarCarta(0);
         }
 
         public Carta RobarAlAzar()
         {
             Random r = new Random();
 
-            Carta carta = cartas[r.Next(0, cartas.Count)];
-
-            cartas.Remove(carta);
-
-            return carta;
+            return RobarCarta(r.Next(0, cartas.Count));
         }
 
         public Carta RobarCarta(int posicion)
@@ -66,6 +60,14 @@ namespace Poker
             cartas.Clear();
             for (int i = 1; i <= 12; i++)
                 foreach(ePalo palo in Enum.GetValues(typeof(ePalo)))
+                    cartas.Add(new Carta(i, palo));
+        }
+
+        public void CrearBarajaFrancesa()
+        {
+            cartas.Clear();
+            for (int i = 1; i <= 13; i++)
+                foreach (ePalo palo in Enum.GetValues(typeof(ePaloFrances)))
                     cartas.Add(new Carta(i, palo));
         }
 

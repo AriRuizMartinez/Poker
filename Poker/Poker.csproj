@@ -44,10 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Baraja.cs" />
+    <Compile Include="BatallaDeCartas.cs" />
     <Compile Include="Carta.cs" />
     <Compile Include="Jugador.cs" />
-    <Compile Include="ePalo.cs" />
     <Compile Include="JugadorPoker.cs" />
+    <Compile Include="Poker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

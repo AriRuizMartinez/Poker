@@ -9,7 +9,7 @@ namespace Poker
     public class Jugador
     {
         protected List<Carta> mano;
-        public int Count {  get { return mano.Count; } }
+        public int NumeroDeCartas {  get { return mano.Count; } }
         public int Id { get; }
 
         public Jugador(int id)
@@ -24,7 +24,7 @@ namespace Poker
             mano.Add(carta);
         }
 
-        public bool IsEmpty()
+        public bool SeHaQuedadoSinCartas()
         {
             return mano.Count == 0;
         }
