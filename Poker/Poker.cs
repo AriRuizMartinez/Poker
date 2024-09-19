@@ -148,7 +148,7 @@ namespace Poker
             int apuesta = -1;
             while(apuesta < 0) 
             {
-                Console.WriteLine("Cuanto quieres apostar?");
+                Console.WriteLine("Cuanto quieres apostar?" );
                 int.TryParse(Console.ReadLine(), out apuesta);
             }
             return apuesta;
