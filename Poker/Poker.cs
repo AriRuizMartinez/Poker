@@ -9,14 +9,7 @@ namespace Poker
 
         public void JugarPoker()
         {
-            int numeroJugadores = Program.PedirNumero();
-
-            List<JugadorPoker> jugadores = new List<JugadorPoker>();
-
-            for (int i = 0; i < numeroJugadores; i++)
-                jugadores.Add(new JugadorPoker(i, 1000));
-
-            Console.WriteLine("Todos los jugadores empezais con 1000$");
+            List<JugadorPoker> jugadores = InicializarJugadores();
 
             Baraja baraja = new Baraja();
 
@@ -33,20 +26,8 @@ namespace Poker
 
                 Console.WriteLine("Tu mano es " + jugadores[0].Mano());
                 Console.WriteLine("Las cartas comunitarias son " + flop.ToString());
-                int apuestaMasAlta = 0;
-                int totalApostado = 0;
-                switch (OpcionesJugador())
-                {
-                    case 1:
 
-                        break;
-                    case 2:
-                        //int apostar = Apostar();
-                        break;
-                    default:
-                        break;
-
-                }
+                RondaDeApuestas(jugadores);
 
             }
             Console.WriteLine("");
@@ -55,11 +36,137 @@ namespace Poker
 
         }
 
-        /*private  int Apostar()
+        private void RondaDeApuestas(List<JugadorPoker> jugadores)
         {
-            Console.WriteLine("Cuanto quieres apostar?");
-            if()
-        }*/
+            int apuestaMasAlta = 0;
+            int totalApostado = 0;
+
+            jugadores[0].ApuestaActual = OpcionesJugador();
+
+            apuestaMasAlta += jugadores[0].ApuestaActual;
+            totalApostado += jugadores[0].ApuestaActual;
+
+            ApuestasNPCS(jugadores, apuestaMasAlta, totalApostado, out apuestaMasAlta, out totalApostado);
+        }
+
+        private void ApuestasNPCS(List<JugadorPoker> jugadores, int apuestaMasAltaRead, int totalApostadoRead, out int apuestaMasAlta, out int totalApostado)
+        {
+            foreach (JugadorPoker jugador in jugadores)
+            {
+                ControlarApuestaIndividual(jugador, apuestaMasAltaRead, totalApostadoRead, out apuestaMasAltaRead, out totalApostadoRead);
+            }
+
+            totalApostado = totalApostadoRead;
+            apuestaMasAlta = apuestaMasAltaRead;
+        }
+
+        private void ControlarApuestaIndividual(JugadorPoker jugador, int apuestaMasAltaRead, int totalApostadoRead, out int apuestaMasAlta, out int totalApostado)
+        {
+            apuestaMasAlta = apuestaMasAltaRead;
+            totalApostado = totalApostadoRead;
+            if (jugador.Id == 0)
+                return;
+
+            if (!jugador.Jugando)
+                return;
+
+            if (jugador.Cuenta < apuestaMasAltaRead - jugador.ApuestaActual)
+                return;
+
+            Random r = new Random();
+
+            if (jugador.ApuestaActual < apuestaMasAltaRead)
+            {
+                OpcionesConApuestaMasBaja(jugador, r, apuestaMasAltaRead, totalApostadoRead, out apuestaMasAltaRead, out totalApostadoRead);
+            }
+            else
+            {
+                OpcionesConLaApuestaMasAlta(jugador, r, apuestaMasAltaRead, totalApostadoRead, out apuestaMasAltaRead, out totalApostadoRead);
+            }
+            apuestaMasAlta = apuestaMasAltaRead;
+            totalApostado = totalApostadoRead;
+        }
+
+        private void OpcionesConLaApuestaMasAlta(JugadorPoker jugador, Random r, int apuestaMasAltaRead, int totalApostadoRead, out int apuestaMasAlta, out int totalApostado)
+        {
+            apuestaMasAlta = apuestaMasAltaRead;
+            totalApostado = totalApostadoRead;
+            if (jugador.Cuenta == 0)
+                return;
+            
+            switch (r.Next(0, 2))
+            {
+                case 0:
+                    //No hacemos nada porque el NPC decide no subir la apuesta
+                    break;
+                case 1:
+                    int incrementoApuesta = r.Next(0, jugador.Cuenta + 1);
+                    jugador.Cuenta -= incrementoApuesta;
+                    jugador.ApuestaActual += incrementoApuesta;
+                    apuestaMasAltaRead += incrementoApuesta;
+                    break;
+                default:
+                    break;
+            }
+            apuestaMasAlta = apuestaMasAltaRead;
+            totalApostado = totalApostadoRead;
+        }
+
+        private void OpcionesConApuestaMasBaja(JugadorPoker jugador, Random r, int apuestaMasAltaRead, int totalApostadoRead, out int apuestaMasAlta, out int totalApostado)
+        {
+            apuestaMasAlta = apuestaMasAltaRead;
+            totalApostado = totalApostadoRead;
+            if (jugador.Cuenta < apuestaMasAltaRead - jugador.ApuestaActual)
+            {
+                jugador.Jugando = false;
+                return;
+            }
+            switch (r.Next(0, 3))
+            {
+                case 0:
+                    jugador.Jugando = false;
+                    break;
+                case 1:
+                    jugador.Cuenta -= apuestaMasAltaRead - jugador.ApuestaActual;
+                    jugador.ApuestaActual = apuestaMasAltaRead;
+                    break;
+                case 2:
+                    int incrementoApuesta = r.Next(0, jugador.Cuenta + 1);
+                    jugador.Cuenta -= incrementoApuesta;
+                    jugador.ApuestaActual += incrementoApuesta;
+                    apuestaMasAltaRead += incrementoApuesta;
+                    break;
+                default:
+                    break;
+            }
+            apuestaMasAlta = apuestaMasAltaRead;
+            totalApostado = totalApostadoRead;
+        }
+
+        private int Apostar()
+        {
+            int apuesta = -1;
+            while(apuesta < 0) 
+            {
+                Console.WriteLine("Cuanto quieres apostar?");
+                int.TryParse(Console.ReadLine(), out apuesta);
+            }
+            return apuesta;
+        }
+
+        private List<JugadorPoker> InicializarJugadores()
+        {
+            List<JugadorPoker> jugadores = new List<JugadorPoker>();
+
+            int numeroJugadores = Program.PedirNumero();
+
+            for (int i = 0; i < numeroJugadores; i++)
+                jugadores.Add(new JugadorPoker(i, 1000));
+
+            Console.WriteLine("Todos los jugadores empezais con 1000$");
+
+            return jugadores;
+        }
 
         private void RepartirPareja(List<JugadorPoker> jugadores, Baraja baraja)
         {
@@ -91,7 +198,10 @@ namespace Poker
 
             } while (option < 1 || option > 2);
 
-            return option;
+            if (option == 2)
+                return Apostar();
+
+            return 0;
         }
 
         int Apuesta()

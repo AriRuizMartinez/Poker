@@ -11,6 +11,8 @@ namespace Poker
         public int Cuenta { get; set; }
         public int ApuestaActual { get; set; }
 
+        public bool Jugando { get; set; }
+
         public JugadorPoker(int id, int cuenta) : base(id)
         {
             Cuenta = cuenta;
